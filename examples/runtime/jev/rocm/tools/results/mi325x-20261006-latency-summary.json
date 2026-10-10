@@ -1,0 +1,270 @@
+{
+  "gpu": "MI325X gfx942",
+  "model_revision": "ac495d1c221297f0ae951941eff27bcf58b5ce52",
+  "run": "soak-aiter-both-20261006T093944Z",
+  "phase": "before mixed soak",
+  "attention": "aiter",
+  "aiter_ops": true,
+  "max_running_requests": 32,
+  "prefix_cache": false,
+  "transport": "loopback HTTP",
+  "shared_gpu": true,
+  "summaries": [
+    {
+      "case": "short-1q",
+      "concurrency": 1,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        52
+      ],
+      "req_s": 67.86,
+      "questions_s": 67.86,
+      "p50_ms": 14.67,
+      "p95_ms": 15.14,
+      "min_ms": 14.5,
+      "max_ms": 15.36
+    },
+    {
+      "case": "short-1q",
+      "concurrency": 4,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        52
+      ],
+      "req_s": 138.43,
+      "questions_s": 138.43,
+      "p50_ms": 28.74,
+      "p95_ms": 29.8,
+      "min_ms": 27.74,
+      "max_ms": 31.04
+    },
+    {
+      "case": "short-1q",
+      "concurrency": 8,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        52
+      ],
+      "req_s": 249.18,
+      "questions_s": 249.18,
+      "p50_ms": 30.78,
+      "p95_ms": 35.5,
+      "min_ms": 25.96,
+      "max_ms": 36.84
+    },
+    {
+      "case": "short-1q",
+      "concurrency": 16,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        52
+      ],
+      "req_s": 271.99,
+      "questions_s": 271.99,
+      "p50_ms": 58.0,
+      "p95_ms": 69.72,
+      "min_ms": 36.57,
+      "max_ms": 72.04
+    },
+    {
+      "case": "ticket-1q",
+      "concurrency": 1,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        95
+      ],
+      "req_s": 67.65,
+      "questions_s": 67.65,
+      "p50_ms": 14.73,
+      "p95_ms": 15.13,
+      "min_ms": 14.39,
+      "max_ms": 15.66
+    },
+    {
+      "case": "ticket-1q",
+      "concurrency": 4,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        95
+      ],
+      "req_s": 129.65,
+      "questions_s": 129.65,
+      "p50_ms": 28.39,
+      "p95_ms": 31.0,
+      "min_ms": 27.73,
+      "max_ms": 85.69
+    },
+    {
+      "case": "ticket-1q",
+      "concurrency": 8,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        95
+      ],
+      "req_s": 197.11,
+      "questions_s": 197.11,
+      "p50_ms": 39.47,
+      "p95_ms": 44.36,
+      "min_ms": 26.53,
+      "max_ms": 46.68
+    },
+    {
+      "case": "ticket-1q",
+      "concurrency": 16,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        95
+      ],
+      "req_s": 238.09,
+      "questions_s": 238.09,
+      "p50_ms": 61.96,
+      "p95_ms": 78.8,
+      "min_ms": 33.91,
+      "max_ms": 81.43
+    },
+    {
+      "case": "short-4q",
+      "concurrency": 1,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        218
+      ],
+      "req_s": 33.78,
+      "questions_s": 135.11,
+      "p50_ms": 29.55,
+      "p95_ms": 30.05,
+      "min_ms": 28.87,
+      "max_ms": 30.26
+    },
+    {
+      "case": "short-4q",
+      "concurrency": 4,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        218
+      ],
+      "req_s": 78.77,
+      "questions_s": 315.08,
+      "p50_ms": 50.65,
+      "p95_ms": 52.82,
+      "min_ms": 48.04,
+      "max_ms": 55.0
+    },
+    {
+      "case": "short-4q",
+      "concurrency": 8,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        218
+      ],
+      "req_s": 98.78,
+      "questions_s": 395.12,
+      "p50_ms": 79.06,
+      "p95_ms": 84.49,
+      "min_ms": 52.39,
+      "max_ms": 84.88
+    },
+    {
+      "case": "short-4q",
+      "concurrency": 16,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        218
+      ],
+      "req_s": 114.79,
+      "questions_s": 459.15,
+      "p50_ms": 135.02,
+      "p95_ms": 152.56,
+      "min_ms": 86.65,
+      "max_ms": 153.08
+    },
+    {
+      "case": "bench-4q",
+      "concurrency": 1,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        406
+      ],
+      "req_s": 31.93,
+      "questions_s": 127.7,
+      "p50_ms": 31.27,
+      "p95_ms": 31.85,
+      "min_ms": 29.88,
+      "max_ms": 32.26
+    },
+    {
+      "case": "bench-4q",
+      "concurrency": 4,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        406
+      ],
+      "req_s": 58.32,
+      "questions_s": 233.29,
+      "p50_ms": 68.6,
+      "p95_ms": 69.98,
+      "min_ms": 65.1,
+      "max_ms": 70.94
+    },
+    {
+      "case": "bench-4q",
+      "concurrency": 8,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        406
+      ],
+      "req_s": 69.71,
+      "questions_s": 278.84,
+      "p50_ms": 113.58,
+      "p95_ms": 119.09,
+      "min_ms": 68.5,
+      "max_ms": 120.19
+    },
+    {
+      "case": "bench-4q",
+      "concurrency": 16,
+      "warmup": 8,
+      "samples": 100,
+      "ok": 100,
+      "input_tokens": [
+        406
+      ],
+      "req_s": 71.66,
+      "questions_s": 286.63,
+      "p50_ms": 218.71,
+      "p95_ms": 224.35,
+      "min_ms": 78.54,
+      "max_ms": 240.53
+    }
+  ]
+}

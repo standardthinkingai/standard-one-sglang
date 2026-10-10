@@ -1,0 +1,10 @@
+# Tested local Apple Silicon environment; keep separate from SGLang CUDA deps.
+mlx==0.32.2
+mlx-vlm==0.7.1
+transformers==5.17.0
+pillow==12.3.0
+fastapi==0.141.1
+uvicorn==0.53.0
+# Required when AutoProcessor initializes Qwen's image/video processors.
+torch==2.14.0
+torchvision==0.29.0

@@ -1,0 +1,65 @@
+# Decision-mode SGLang fork on a stock SGLang image.
+#
+# BASE_IMAGE picks the GPU family (see README.md, "GPU profiles"):
+#   gfx950 MI350X/MI355X  lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260929 (default)
+#   gfx942 MI300X/MI325X  lmsysorg/sglang-rocm:v0.5.20-rocm720-mi30x-20260929
+#   NVIDIA (B200/B300)    lmsysorg/sglang:nightly-dev-cu13-20260929-79cafec0
+# All three ship sglang-kernel 0.4.7, which this fork's python/ tree pins.
+#
+# Keeps every compiled component of the base image (sgl-kernel, aiter, triton,
+# torch) and replaces only the pure-Python `sglang` package with this fork's,
+# plus the jev-adapter package that the fork imports in decision mode.
+#
+# Build context: a directory holding
+#   sglang-jev/python/                  (this repository's python/ tree)
+#   sglang-jev/examples/runtime/jev/    (this directory's parent)
+#   jev-adapter/                        (the jev-adapter repository)
+#   jit-cache/aiter/, jit-cache/root-cache/  (optional warm JIT cache; may be empty)
+#
+#   docker build -f sglang-jev/examples/runtime/jev/rocm/Dockerfile.decision \
+#     --build-arg FORK_COMMIT=<sha> --build-arg ADAPTER_COMMIT=<sha> \
+#     -t st-sglang:decision-<sha8> <context>
+ARG BASE_IMAGE=lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260929
+FROM ${BASE_IMAGE}
+ARG FORK_COMMIT=unknown
+ARG ADAPTER_COMMIT=unknown
+
+COPY sglang-jev/python /opt/engine/src/sglang-jev/python
+COPY sglang-jev/examples/runtime/jev /opt/engine/src/sglang-jev/examples/runtime/jev
+COPY jev-adapter /opt/engine/src/jev-adapter
+# Optional warm JIT cache (the directories may be empty). aiter compiles its
+# attention variants on first use, about 60 s each on gfx950: paged prefill
+# with and without a mask, and the Pixtral vision encoder's varlen forward.
+# Copy the *.so files from a warmed container into jit-cache/aiter/ (and its
+# ~/.cache, ~/.triton into jit-cache/root-cache/) so a new container answers
+# its first text and image requests without compiling.
+COPY jit-cache/aiter/ /sgl-workspace/aiter/aiter/jit/
+COPY jit-cache/root-cache/ /root/
+
+# The base image installs its own sglang checkout as an editable package (a
+# PEP 660 finder or a path .pth). Repoint it (package and namespace mappings) at the fork,
+# so `import sglang` resolves to it without rebuilding any extension. The
+# fork's source tree does not ship setuptools-scm's generated _version.py, so
+# write one that names the fork commit instead of the base image's.
+#
+# The ROCm images keep it in /opt/venv (Python 3.10), the CUDA images in the
+# system Python, so the site-packages directory is asked from the interpreter.
+RUN set -eux; \
+    site="$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')"; \
+    links="$(grep -l /sgl-workspace/sglang/python "$site"/__editable___sglang_*_finder.py "$site"/*.pth 2>/dev/null || true)"; \
+    test -n "$links"; \
+    sed -i -e "s#/sgl-workspace/sglang/python/sglang#/opt/engine/src/sglang-jev/python/sglang#g" \
+      -e "s#^/sgl-workspace/sglang/python\$#/opt/engine/src/sglang-jev/python#" $links; \
+    printf '__version__ = version = "0.5.20.dev0+jev.%s"\n__version_tuple__ = version_tuple = (0, 5, 20, "dev0", "jev.%s")\n' \
+      "$FORK_COMMIT" "$FORK_COMMIT" > /opt/engine/src/sglang-jev/python/sglang/_version.py; \
+    echo /opt/engine/src/jev-adapter > "$site"/jev_adapter_src.pth; \
+    cd /tmp; \
+    python3 -c "import sglang, sglang.version, jev_adapter.inprocess, sglang.srt.layers.decision_readout as r; \
+assert sglang.__file__.startswith('/opt/engine/src/sglang-jev/python/'), sglang.__file__; \
+assert r.__file__.startswith('/opt/engine/src/sglang-jev/python/'), r.__file__; \
+print('sglang', sglang.version.__version__, sglang.__file__)"
+
+LABEL org.opencontainers.image.title="st-sglang decision" \
+      ai.standardthinking.fork_commit="${FORK_COMMIT}" \
+      ai.standardthinking.adapter_commit="${ADAPTER_COMMIT}" \
+      ai.standardthinking.base_image="${BASE_IMAGE}"

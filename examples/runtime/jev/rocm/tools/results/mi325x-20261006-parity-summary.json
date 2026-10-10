@@ -1,0 +1,42 @@
+{
+  "reference_run": "arch-8B-branch-20261006T053359Z",
+  "metric": "answer agreement with reference, not labeled-task accuracy",
+  "configurations": {
+    "triton": {
+      "requests": 4705,
+      "status_mismatch": 0,
+      "usage_mismatch": 0,
+      "questions": 6125,
+      "same": 6035,
+      "same_pct": 98.53,
+      "median_abs_dp": 0.00084,
+      "p99_abs_dp": 0.0342,
+      "max_abs_dp": 0.1473,
+      "status_examples": []
+    },
+    "aiter-ops": {
+      "requests": 4705,
+      "status_mismatch": 0,
+      "usage_mismatch": 0,
+      "questions": 6125,
+      "same": 5986,
+      "same_pct": 97.73,
+      "median_abs_dp": 0.01043,
+      "p99_abs_dp": 0.0797,
+      "max_abs_dp": 0.1846,
+      "status_examples": []
+    },
+    "aiter-both": {
+      "requests": 4705,
+      "status_mismatch": 0,
+      "usage_mismatch": 0,
+      "questions": 6125,
+      "same": 5972,
+      "same_pct": 97.5,
+      "median_abs_dp": 0.01098,
+      "p99_abs_dp": 0.0731,
+      "max_abs_dp": 0.2347,
+      "status_examples": []
+    }
+  }
+}
